@@ -1,8 +1,11 @@
 #!/usr/bin/ python
+from flask import Flask
 from datetime import timedelta
 from datetime import datetime
 from datetime import date
 from optparse import OptionParser
+
+app = Flask(__name__)
 
 def daysFromChristmas():
     currentdate = date.today()
@@ -11,7 +14,7 @@ def daysFromChristmas():
         christmas = date(datetime.today().year + 1,12,25)
     delta = christmas - currentdate
     days = delta.days
-    print "%d from the nearest Christmas" % days
+    return "%d from the nearest Christmas" % days
 
 def daysFromDate(strdate):
     currentdate = date.today()
@@ -21,31 +24,33 @@ def daysFromDate(strdate):
     
 def event(strdate,event):
     days = daysFromDate(strdate)
-    print "%d days until %s" % (days,event)
+    return "%d days until %s" % (days,event)
 
 def deadline(strdate):
     days = daysFromDate(strdate)
     futuredate = datetime.strptime(strdate, '%Y-%m-%d').date()
-    print "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
+    return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
 
-
-def run():
+@app.route("/")
+def main():
     parser = OptionParser()
     parser.add_option("-d", "--deadline", dest="date",
                       help="Specify the deadline in ISO format: yyyy-mm-dd", metavar="DEADLINE")
     parser.add_option("-e", "--event", dest="event", 
                       help="Name of the deadline event",metavar="EVENT")
     (options, args) = parser.parse_args()
+    result = ""
     if options.date is not None:
         if options.event is not None:
-            event(options.date,options.event)
+            result = event(options.date,options.event)
         else:
-            deadline(options.date)
+            result = deadline(options.date)
     else:
-        daysFromChristmas()
+        result = daysFromChristmas()
+    return result
 
 if __name__ == "__main__":
-    run()
+    app.run()
     
         
 
