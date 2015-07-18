@@ -45,8 +45,7 @@ def main():
             result = deadline(options.date)
     else:
         result = daysFromChristmas()
-    print result
-    return result
+    return "%s, %s" % (result,datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 if __name__ == "__main__":
     app.run()        
