@@ -1,11 +1,14 @@
 #!/usr/bin/python
+from flask.ext.script import Manager
 from flask import Flask
 from datetime import datetime
-from optparse import OptionParser
 import requests
 import json
 
 app = Flask(__name__)
+# configure your app
+
+manager = Manager(app)
 
 def daysFromChristmas():
     currentdate = datetime.now()
@@ -22,7 +25,7 @@ def daysFromDate(strdate):
     delta = futuredate - currentdate
     return delta.days
     
-def event(strdate,event):
+def events(strdate,event):
     days = daysFromDate(strdate)
     return "%d days until %s" % (days,event)
 
@@ -31,33 +34,31 @@ def deadline(strdate):
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
 
-@app.route("/")
-def main():
-    parser = OptionParser()
-    parser.add_option("-d", "--deadline", dest="date",
-                      help="Specify the deadline in ISO format: yyyy-mm-dd", metavar="DEADLINE")
-    parser.add_option("-e", "--event", dest="event", 
-                      help="Name of the deadline event",metavar="EVENT")
-    (options, args) = parser.parse_args()
-    result = ""
-    if options.date:
-        if options.event:
-            result = event(options.date,options.event)
-        else:
-            result = deadline(options.date)
-    else:
-        result = daysFromChristmas()
-    
-    out = "%s" % (result)
-    
+def post(out):
     url = "https://hooks.slack.com/services/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"
     payload = {'text' : out }
     r = requests.post(url, data=json.dumps(payload))
     
-    return out
 
+
+@manager.option("-d", "--deadline", dest="date",
+                      help="Specify the deadline in ISO format: yyyy-mm-dd", metavar="DEADLINE")
+@manager.option("-e", "--event", dest="event", 
+                      help="Name of the deadline event",metavar="EVENT")
+def deadline(date,event):
+    result = ""
+    if date:
+        if event:
+            result = events(date,event)
+        else:
+            result = deadline(date)
+    else:
+        result = daysFromChristmas()
+    
+    post(result)
+
+    
 if __name__ == "__main__":
-    app.run()        
-
+    manager.run()
 
 
