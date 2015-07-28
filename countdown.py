@@ -2,6 +2,8 @@
 from flask import Flask
 from datetime import datetime
 from optparse import OptionParser
+import requests
+import json
 
 app = Flask(__name__)
 
@@ -45,7 +47,14 @@ def main():
             result = deadline(options.date)
     else:
         result = daysFromChristmas()
-    return "%s, %s" % (result,datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    
+    out = "%s" % (result)
+    
+    url = "https://hooks.slack.com/services/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"
+    payload = {'text' : out }
+    r = requests.post(url, data=json.dumps(payload))
+    
+    return out
 
 if __name__ == "__main__":
     app.run()        
