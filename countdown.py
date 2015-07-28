@@ -34,11 +34,32 @@ def deadline(strdate):
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
 
-def post(out):
+def post(out,date):
     url = "https://hooks.slack.com/services/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"
-    payload = {'text' : out }
+    payload = {
+                 "attachments": [
+                     {
+                         "text": out,
+                         "image_url": "https://tctechcrunch2011.files.wordpress.com/2015/01/disruptsf2015_banner.png",
+                         "color": "#7CD197"
+                     }
+                 ]
+            }
+    
     r = requests.post(url, data=json.dumps(payload))
     
+    days = daysFromDate(date)
+    giphy = "%d days" % (days)
+    payload = {
+        "attachments": [
+            {
+                "command": "giphy",
+                "text": giphy
+            }
+        ]
+    }
+    
+    r = requests.post(url, data=json.dumps(payload))  
 
 
 @manager.option("-d", "--deadline", dest="date",
@@ -55,7 +76,7 @@ def deadline(date,event):
     else:
         result = daysFromChristmas()
     
-    post(result)
+    post(result,date)
 
     
 if __name__ == "__main__":
