@@ -49,7 +49,8 @@ def deadline(strdate):
 
 def post(out):
     """ Posts a request to the slack webhook. Payload can be customized
-    so the message in slack is customized.
+    so the message in slack is customized. The variable out is the text 
+    to be displayed.
     """    
     url = ("https://hooks.slack.com/services/T02HE4CM9/B0891AYE9/mMTVLFQB5O9ZxWD"
           "WUB20Ioej")
