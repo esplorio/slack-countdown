@@ -29,7 +29,10 @@ def days_from_christmas():
         christmas = date(datetime.today().year + 1, 12, 25)
     delta = christmas - currentdate
     days = delta.days
-    return "%d from the nearest Christmas" % days
+    if days == 1:
+        return "%d day from the nearest Christmas" % days
+    else:
+        return "%d days from the nearest Christmas" % days
 
 
 def days_from_date(strdate):
@@ -50,7 +53,11 @@ def deadline(strdate):
     """ Returns string to be displayed"""
     days = days_from_date(strdate)
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
-    return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
+    if days == 1:
+        return "%d day until %s" % (days, futuredate.strftime("%d %B, %Y")) 
+    else:
+        return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
+    
 
 
 def post(out):
@@ -58,15 +65,12 @@ def post(out):
     so the message in slack is customized. The variable out is the text 
     to be displayed.
     """    
-    
-    #url = ("https://hooks.slack.com/services/T02HE4CM9/B0891AYE9/mMTVLFQB5O9ZxWD"
-    #      "WUB20Ioej")
+
     payload = {
         "attachments": [
-            {
+            {   
+                "title": "COUNTDOWN!",
                 "text": out,
-                "image_url": "https://tctechcrunch2011.files.wordpress.com/"
-                              "2015/01/disruptsf2015_banner.png",
                 "color": "#7CD197"
             }
         ]
