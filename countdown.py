@@ -2,8 +2,9 @@
 from flask.ext.script import Manager
 from flask import Flask
 from datetime import datetime
-import requests
 import json
+import os
+import requests
 
 app = Flask(__name__)
 
@@ -11,6 +12,11 @@ app = Flask(__name__)
 manager = Manager(app)
 
 """Creates web app to be deployed on Heroku."""
+
+SLACK_URL = os.environ.get('SLACK_URL')
+if not SLACK_URL:
+    print("Missing environment variable SLACK_URL")
+    exit(1)
 
 
 def days_from_christmas():
@@ -52,8 +58,9 @@ def post(out):
     so the message in slack is customized. The variable out is the text 
     to be displayed.
     """    
-    url = ("https://hooks.slack.com/services/T02HE4CM9/B0891AYE9/mMTVLFQB5O9ZxWD"
-          "WUB20Ioej")
+    
+    #url = ("https://hooks.slack.com/services/T02HE4CM9/B0891AYE9/mMTVLFQB5O9ZxWD"
+    #      "WUB20Ioej")
     payload = {
         "attachments": [
             {
@@ -65,7 +72,7 @@ def post(out):
         ]
     }
     
-    r = requests.post(url, data=json.dumps(payload))
+    r = requests.post(SLACK_URL, data=json.dumps(payload))
  
 
 @manager.option("-d", "--deadline", dest="date",
