@@ -25,24 +25,23 @@ though the Heroku Scheduler is free, requires that the account has a method of p
 1. Click on the Heroku Scheduler, this will open up a dashboard where we can run scripts periodically.
 
 1. We will need run the countdown.py deadline task
-The method takes these 2 optional arguments:
-```
-$ ./countdown  --help
-Usage: countdown [options]
+	The specification for the method is as follows:
+	```
+	The method takes two optional arguments.
 
-Options:
-  -d DEADLINE, --deadline=DEADLINE
-                        Specify the deadline in ISO format: yyyy-mm-dd
-  -e EVENT, --event=EVENT
-                        Name of the deadline event
-```
-i.e.
-If the date today is the 16th July 2015 then
-- `countdown -d 2015-07-18` should print out “2 days until 18 July 2015”
-- `countdown -d 2015-07-18 -e weekend` should print out “2 days until weekend”.
+	Options:
+	  -d DEADLINE, --deadline=DEADLINE
+	                        Specify the deadline in ISO format: yyyy-mm-dd
+	  -e EVENT, --event=EVENT
+	                        Name of the deadline event
+	```
+	i.e.
+	If the date today is the 16th July 2015 then
+	- `countdown deadline -d 2015-07-18` should print out “2 days until 18 July 2015”
+	- `countdown deadline -d 2015-07-18 -e weekend` should print out “2 days until weekend”.
 
-If no argument is given, the default is for the method to post how many days till the
-next Christmas.
+	If no argument is given, the default is for the method to post how many days till the
+	next Christmas.
 
 1. In the terminal type:
 	```
