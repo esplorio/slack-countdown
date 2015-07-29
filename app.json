@@ -3,7 +3,7 @@
 	"description": "Get countdown notification for upcoming events in Slack chatrooms",
 	"repository": "https://github.com/Denvar94/slack-countdown.git",
 	"scripts":{
-	 	"postdeploy": "heroku addons :open scheduler"
+	 	"postdeploy": "open scheduler"
 	},
 	"env": {
 		"SLACK_URL": null
