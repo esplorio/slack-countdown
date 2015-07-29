@@ -99,7 +99,7 @@ def deadline(date,event):
 
 @manager.command
 def initiate():
-    payload = { text: "App is now connected to your Slack Channel."}
+    payload = { "text": "App is now connected to your Slack Channel."}
     r = requests.post(SLACK_URL, data=json.dumps(payload))
     
     
