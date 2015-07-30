@@ -1,0 +1,14 @@
+{
+	"name": "Slack Hook Countdown",
+	"description": "Get countdown notification for upcoming events in Slack chatrooms",
+	"repository": "https://github.com/Denvar94/slack-countdown.git",
+	"scripts":{
+	 	"postdeploy": "python countdown.py initiate"
+	},
+	"env": {
+		"SLACK_URL": null
+	},
+	"addons": [
+		"scheduler"
+	]
+}
