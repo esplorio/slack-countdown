@@ -13,12 +13,14 @@ manager = Manager(app)
 
 """Creates web app to be deployed on Heroku."""
 
-
+"""
 SLACK_URL = os.environ.get('SLACK_URL')
 if not SLACK_URL:
     print("Missing environment variable SLACK_URL")
     exit(1)
+"""
 
+SLACK_URL = "https://hooks.slack.com/services/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"
 
 def days_from_christmas():
     """Calculates the number of days between the current date and the next 
@@ -37,26 +39,42 @@ def days_from_christmas():
 
 
 def days_from_date(strdate):
-    """ Returns the number of days between strdate and today."""
+    """ Returns the number of days between strdate and today. Add one to date
+    as date caclulate is relative to time
+    """
     currentdate = datetime.today()
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     delta = futuredate - currentdate
-    return delta.days
+    return delta.days + 1
 
     
 def events(strdate,event):
-    """ Returns string to be displayed with the event mentioned"""
+    """ Returns string to be displayed with the event mentioned. Sends an error
+    if date is incorrect
+    """
     days = days_from_date(strdate)
-    assert (days >= 0), "Date needs to be in the future"
-    return "%d days until %s" % (days,event)
+    assert (days >= -2), "Date needs to be in the future"
+    if days == -1:
+        return "%d day since %s" % (1,event)
+    elif days == -2:
+        return "%d days since %s" % (2,event)
+    elif days == 1:
+        return "%d day until %s" % (days,event)
+    else:
+        return "%d days until %s" % (days,event)
 
 
 def date_only(strdate):
-    """ Returns string to be displayed"""
+    """ Returns string to be displayed. Sends error message if date is
+    in the past
+    """
     days = days_from_date(strdate)
-    print "Here"
-    assert (days >= 0), "Date needs to be in the future"
+    assert (days >= -2), "Date needs to be in the future"
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
+    if days == -1:
+        return "%d day since %s" % (1, futuredate.strftime("%d %B, %Y"))
+    if days == -2:
+        return "%d days since %s" % (days, futuredate.strftime("%d %B, %Y")) 
     if days == 1:
         return "%d day until %s" % (days, futuredate.strftime("%d %B, %Y")) 
     else:
