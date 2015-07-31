@@ -13,14 +13,12 @@ manager = Manager(app)
 
 """Creates web app to be deployed on Heroku."""
 
-"""
+
 SLACK_URL = os.environ.get('SLACK_URL')
 if not SLACK_URL:
     print("Missing environment variable SLACK_URL")
     exit(1)
-"""
 
-SLACK_URL = "https://hooks.slack.com/services/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"
 
 def days_from_christmas():
     """Calculates the number of days between the current date and the next 
@@ -86,6 +84,10 @@ def post(out):
 
 
 def post_error():
+    """Sends error message in Slack to alert the user
+    about the incorrect date argument
+    """
+    
     payload = {
         "attachments": [
             {
