@@ -13,11 +13,14 @@ manager = Manager(app)
 
 """Creates web app to be deployed on Heroku."""
 
+"""
 SLACK_URL = os.environ.get('SLACK_URL')
 if not SLACK_URL:
     print("Missing environment variable SLACK_URL")
     exit(1)
+"""
 
+SLACK_URL = "https://hooks.slack.com/services/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"
 
 def days_from_christmas():
     """Calculates the number of days between the current date and the next 
@@ -46,12 +49,15 @@ def days_from_date(strdate):
 def events(strdate,event):
     """ Returns string to be displayed with the event mentioned"""
     days = days_from_date(strdate)
+    assert (days >= 0), "Date needs to be in the future"
     return "%d days until %s" % (days,event)
 
 
 def date_only(strdate):
     """ Returns string to be displayed"""
     days = days_from_date(strdate)
+    print "Here"
+    assert (days >= 0), "Date needs to be in the future"
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     if days == 1:
         return "%d day until %s" % (days, futuredate.strftime("%d %B, %Y")) 
@@ -77,6 +83,22 @@ def post(out):
     }
     
     r = requests.post(SLACK_URL, data=json.dumps(payload))
+
+
+def post_error():
+    payload = {
+        "attachments": [
+            {
+                "title": "Error",
+                "text": ("Date entered must be in the future. "
+                        "\n Go to the <https://heroku.com|Heroku Scheduler> for you app and edit"
+                        " the command"),
+                        "color": "#525162"
+            }
+        ]
+    }
+    
+    r = requests.post(SLACK_URL, data=json.dumps(payload))
  
 
 @manager.option("-d", "--deadline", dest="date",
@@ -88,17 +110,21 @@ def deadline(date,event):
     """ Method takes two optional arguments. Displays in slack channel
     the number of days till the event. If no arguments are given,
     the number of days till Christmas is displayed.
-    """
-    result = ""
-    if date:
-        if event:
-            result = events(date, event)
+    """    
+    try:
+        result = ""
+        if date:
+            if event:
+                result = events(date, event)
+            else:
+                result = date_only(date)
         else:
-            result = date_only(date)
+            result = days_from_christmas()
+    except:
+        post_error()
     else:
-        result = days_from_christmas()
-    
-    post(result)
+        post(result)
+        
 
 
 @manager.command
