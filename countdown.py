@@ -49,7 +49,7 @@ def events(strdate,event):
     return "%d days until %s" % (days,event)
 
 
-def deadline(strdate):
+def date_only(strdate):
     """ Returns string to be displayed"""
     days = days_from_date(strdate)
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
@@ -94,7 +94,7 @@ def deadline(date,event):
         if event:
             result = events(date, event)
         else:
-            result = deadline(date)
+            result = date_only(date)
     else:
         result = days_from_christmas()
     
