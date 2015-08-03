@@ -16,7 +16,7 @@ you have a Heroku account and have added a method of payment on there. Including
         <img src="https://www.herokucdn.com/deploy/button.png" alt="Deploy">
     </a>
 
-3. When prompted by Heroku, paste the unique URL into the 'SLACK_URL' field and deploy the app.
+3. When prompted by Heroku, paste the unique URL into the `SLACK_URL` field under `Config variables` and deploy the app.
 
 4. After deployment, click on "manage apps". You should also get a message to your Slack channel
     to confirm connection.
