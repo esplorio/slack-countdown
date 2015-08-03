@@ -1,6 +1,10 @@
 Countdown program to Slack hook
 -------------------------------
-Recieve notifications daily about an incoming deadline.
+Receive notifications daily about an incoming deadline.
+
+## Background
+
+We built this in the run up to TC Disrupt 2015 to lighting a giant fire under our arse
 
 ## Setup
 
