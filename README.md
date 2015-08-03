@@ -6,6 +6,8 @@ Receive notifications daily about an incoming deadline.
 
 We built this in the run up to TC Disrupt 2015 to lighting a giant fire under our arse
 
+![tc-disrupt](https://s3-eu-west-1.amazonaws.com/generic-assets.esplor.io/images_on_web/TC_Disrupt_Slack_Countdown.png)
+
 ## Setup
 
 There are two ways of setting up. One is to clone this repository and make any optional modifications to the coundown.py file and deploy it yourself to Heroku. The other is to follow
