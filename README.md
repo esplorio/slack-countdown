@@ -35,8 +35,8 @@ you have a Heroku account and have added a method of payment on there. Including
     ```
     i.e.
     If the date today is the 16th July 2015 then
-    - `countdown deadline -d 2015-07-18` should print out “2 days until 18 July 2015”
-    - `countdown deadline -d 2015-07-18 -e weekend` should print out “2 days until weekend”.
+    - `countdown deadline -d 2015-07-18` will print out “2 days until 18 July 2015”
+    - `countdown deadline -d 2015-07-18 -e weekend` will print out “2 days until weekend”.
 
     If no argument is given, the default is for the method to post how many days till the
     next Christmas.
