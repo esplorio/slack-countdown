@@ -6,7 +6,7 @@ Recieve notifications daily about an incoming deadline.
 
 There are two ways of setting up. One is to clone this repository and make any optional modifications to the coundown.py file and deploy it yourself to Heroku. The other is to follow
 the simple steps below which uses the Heroku button to deploy the app. A prequisite is that 
-you have a Heroku account and have added a method of payment on there. Including add ons on a Herku app, even though the Heroku Scheduler is free, requires that the account has a method of payment.
+you have a Heroku account and have added a method of payment on there. Including add ons on a Heroku app, even though the Heroku Scheduler is free, requires that the account has a method of payment.
 
 1. Create a <a href="https://slack.com/services/new/incoming-webhook" target="_blank"> new incoming webhook</a> for your Slack channel and copy the unique URL. This is the URL countdown.py will be sending post requests to.
 
