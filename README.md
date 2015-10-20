@@ -2,6 +2,7 @@ Countdown program to Slack hook
 -------------------------------
 
 [![Requirements Status](https://requires.io/github/esplorio/slack-countdown/requirements.svg?branch=master)](https://requires.io/github/esplorio/slack-countdown/requirements/?branch=master)
+[![Code Climate](https://codeclimate.com/github/esplorio/slack-countdown/badges/gpa.svg)](https://codeclimate.com/github/esplorio/slack-countdown)
 
 Receive notifications daily about an incoming deadline.
 
