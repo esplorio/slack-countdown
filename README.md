@@ -1,5 +1,8 @@
 Countdown program to Slack hook
 -------------------------------
+
+[![Requirements Status](https://requires.io/github/esplorio/slack-countdown/requirements.svg?branch=master)](https://requires.io/github/esplorio/slack-countdown/requirements/?branch=master)
+
 Receive notifications daily about an incoming deadline.
 
 ## Background
