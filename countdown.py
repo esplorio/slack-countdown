@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import os
 import requests
+import numpy
 
 app = Flask(__name__)
 
@@ -34,21 +35,24 @@ def days_from_christmas():
         return "%d days from the nearest Christmas" % days
 
 
-def days_from_date(strdate):
+def days_from_date(strdate,business_days):
     """ Returns the number of days between strdate and today. Add one to date
     as date caclulate is relative to time
     """
     currentdate = datetime.today()
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
-    delta = futuredate - currentdate
-    return delta.days + 1
+    if business_days:
+        delta = numpy.busday_count(currentdate.date(), futuredate.date())
+    else:
+        delta = (futuredate - currentdate).days + 1
+    return delta
 
     
-def events(strdate,event):
+def events(strdate,event,business_days):
     """ Returns string to be displayed with the event mentioned. Sends an error
     if date is incorrect
     """
-    days = days_from_date(strdate)
+    days = days_from_date(strdate,business_days)
     assert (days >= -2), "Date needs to be in the future"
     if days == -1:
         return "%d day since %s" % (1,event)
@@ -60,7 +64,7 @@ def events(strdate,event):
         return "%d days until %s" % (days,event)
 
 
-def date_only(strdate):
+def date_only(strdate,business_days):
     """ Returns string to be displayed. Sends error message if date is
     in the past
     """
@@ -122,7 +126,9 @@ def post_error():
                       metavar="DEADLINE")
 @manager.option("-e", "--event", dest="event", 
                       help="Name of the deadline event",metavar="EVENT")
-def deadline(date,event):
+@manager.option("-b", "--business-days", dest="business_days", action="store_true", 
+                      help="Give the count of business days only")
+def deadline(date,event,business_days):
     """ Method takes two optional arguments. Displays in slack channel
     the number of days till the event. If no arguments are given,
     the number of days till Christmas is displayed.
@@ -131,9 +137,9 @@ def deadline(date,event):
         result = ""
         if date:
             if event:
-                result = events(date, event)
+                result = events(date, event, business_days)
             else:
-                result = date_only(date)
+                result = date_only(date, business_days)
         else:
             result = days_from_christmas()
     except:
