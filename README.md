@@ -44,6 +44,7 @@ A prerequisite is that you have a Heroku account and have added a method of paym
                             Specify the deadline in ISO format: yyyy-mm-dd
       -e EVENT, --event=EVENT
                             Name of the deadline event
+      -b, --business-days   Give the count of business days only
     ```
     i.e.
     If the date today is the 16th July 2015 then

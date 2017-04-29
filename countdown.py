@@ -53,15 +53,18 @@ def events(strdate,event,business_days):
     if date is incorrect
     """
     days = days_from_date(strdate,business_days)
+    day_qualifier = ""
+    if business_days:
+        day_qualifier = "business "
     assert (days >= -2), "Date needs to be in the future"
     if days == -1:
-        return "%d day since %s" % (1,event)
+        return "%d %sday since %s" % (1,day_qualifier,event)
     elif days == -2:
-        return "%d days since %s" % (2,event)
+        return "%d %sdays since %s" % (2,day_qualifier,event)
     elif days == 1:
-        return "%d day until %s" % (days,event)
+        return "%d %sday until %s" % (days,day_qualifier,event)
     else:
-        return "%d days until %s" % (days,event)
+        return "%d %sdays until %s" % (days,day_qualifier,event)
 
 
 def date_only(strdate,business_days):
@@ -69,16 +72,19 @@ def date_only(strdate,business_days):
     in the past
     """
     days = days_from_date(strdate)
+    day_qualifier = ""
+    if business_days:
+        day_qualifier = "business "
     assert (days >= -2), "Date needs to be in the future"
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     if days == -1:
-        return "%d day since %s" % (1, futuredate.strftime("%d %B, %Y"))
+        return "%d %sday since %s" % (1, day_qualifier, futuredate.strftime("%d %B, %Y"))
     if days == -2:
-        return "%d days since %s" % (days, futuredate.strftime("%d %B, %Y")) 
+        return "%d %sdays since %s" % (days, day_qualifier, futuredate.strftime("%d %B, %Y")) 
     if days == 1:
-        return "%d day until %s" % (days, futuredate.strftime("%d %B, %Y")) 
+        return "%d %sday until %s" % (days, day_qualifier, futuredate.strftime("%d %B, %Y")) 
     else:
-        return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
+        return "%d %sdays until %s" % (days, day_qualifier, futuredate.strftime("%d %B, %Y"))
     
 
 
