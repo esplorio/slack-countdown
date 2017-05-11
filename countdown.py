@@ -5,7 +5,7 @@ from datetime import datetime
 import json
 import os
 import requests
-import numpy
+import workdays
 
 app = Flask(__name__)
 
@@ -42,7 +42,7 @@ def days_from_date(strdate,business_days):
     currentdate = datetime.today()
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     if business_days:
-        delta = numpy.busday_count(currentdate.date(), futuredate.date())
+        delta = workdays.networkdays(currentdate, futuredate)
     else:
         delta = (futuredate - currentdate).days + 1
     return delta
