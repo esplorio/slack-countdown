@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import os
 import requests
+import workdays
 
 app = Flask(__name__)
 
@@ -34,47 +35,56 @@ def days_from_christmas():
         return "%d days from the nearest Christmas" % days
 
 
-def days_from_date(strdate):
+def days_from_date(strdate, business_days):
     """ Returns the number of days between strdate and today. Add one to date
     as date caclulate is relative to time
     """
     currentdate = datetime.today()
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
-    delta = futuredate - currentdate
-    return delta.days + 1
+    if business_days:
+        delta = workdays.networkdays(currentdate, futuredate)
+    else:
+        delta = (futuredate - currentdate).days + 1
+    return delta
 
     
-def events(strdate,event):
+def events(strdate, event, business_days):
     """ Returns string to be displayed with the event mentioned. Sends an error
     if date is incorrect
     """
-    days = days_from_date(strdate)
+    days = days_from_date(strdate, business_days)
+    day_qualifier = ""
+    if business_days:
+        day_qualifier = "business "
     assert (days >= -2), "Date needs to be in the future"
     if days == -1:
-        return "%d day since %s" % (1,event)
+        return "%d %sday since %s" % (1, day_qualifier, event)
     elif days == -2:
-        return "%d days since %s" % (2,event)
+        return "%d %sdays since %s" % (2, day_qualifier, event)
     elif days == 1:
-        return "%d day until %s" % (days,event)
+        return "%d %sday until %s" % (days, day_qualifier, event)
     else:
-        return "%d days until %s" % (days,event)
+        return "%d %sdays until %s" % (days, day_qualifier, event)
 
 
-def date_only(strdate):
+def date_only(strdate, business_days):
     """ Returns string to be displayed. Sends error message if date is
     in the past
     """
     days = days_from_date(strdate)
+    day_qualifier = ""
+    if business_days:
+        day_qualifier = "business "
     assert (days >= -2), "Date needs to be in the future"
     futuredate = datetime.strptime(strdate, '%Y-%m-%d')
     if days == -1:
-        return "%d day since %s" % (1, futuredate.strftime("%d %B, %Y"))
+        return "%d %sday since %s" % (1, day_qualifier, futuredate.strftime("%d %B, %Y"))
     if days == -2:
-        return "%d days since %s" % (days, futuredate.strftime("%d %B, %Y")) 
+        return "%d %sdays since %s" % (days, day_qualifier, futuredate.strftime("%d %B, %Y")) 
     if days == 1:
-        return "%d day until %s" % (days, futuredate.strftime("%d %B, %Y")) 
+        return "%d %sday until %s" % (days, day_qualifier, futuredate.strftime("%d %B, %Y")) 
     else:
-        return "%d days until %s" % (days, futuredate.strftime("%d %B, %Y"))
+        return "%d %sdays until %s" % (days, day_qualifier, futuredate.strftime("%d %B, %Y"))
     
 
 
@@ -122,7 +132,9 @@ def post_error():
                       metavar="DEADLINE")
 @manager.option("-e", "--event", dest="event", 
                       help="Name of the deadline event",metavar="EVENT")
-def deadline(date,event):
+@manager.option("-b", "--business-days", dest="business_days", action="store_true", 
+                      help="Give the count of business days only")
+def deadline(date, event, business_days):
     """ Method takes two optional arguments. Displays in slack channel
     the number of days till the event. If no arguments are given,
     the number of days till Christmas is displayed.
@@ -131,9 +143,9 @@ def deadline(date,event):
         result = ""
         if date:
             if event:
-                result = events(date, event)
+                result = events(date, event, business_days)
             else:
-                result = date_only(date)
+                result = date_only(date, business_days)
         else:
             result = days_from_christmas()
     except:
