@@ -1,5 +1,5 @@
 Flask==1.0.2
 Flask-Script==2.0.6
 gunicorn==19.8.1
-requests==2.18.4
+requests==2.19.0
 workdays==1.4
